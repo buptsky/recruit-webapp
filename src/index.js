@@ -6,7 +6,7 @@ import AppRouter from './AppRouter';
 import {createStore, applyMiddleware, compose} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
-import rootReducer from './redux/reducers/index'
+import rootReducer from './redux/index'
 
 // redux 状态调试
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
