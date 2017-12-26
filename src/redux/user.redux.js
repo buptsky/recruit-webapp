@@ -1,13 +1,16 @@
 import axios from 'axios';
+import {getRedirectPath} from '../util';
 const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const ERROR_MSG = 'ERROR_MSG';
+const LOAD_DATA = 'LOAD_DATA';
 
 // reducer
 const initState = {
+  redirectTo: '',
   msg: '',
   isAuth: false,
   userName: '',
-  userPwd: '',
   userType: ''
 }
 export function user(state = initState, action) {
@@ -16,12 +19,27 @@ export function user(state = initState, action) {
       return {
         ...state,
         ...action.payload,
+        redirectTo: getRedirectPath(action.payload),
         msg: '',
         isAuth: true
+      }
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        ...action.payload,
+        redirectTo: getRedirectPath(action.payload),
+        msg: '',
+        isAuth: true
+      }
+    case LOAD_DATA:
+      return {
+        ...state,
+        ...action.payload
       }
     case ERROR_MSG:
       return {
         ...state,
+        redirectTo: '',
         isAuth: false,
         msg: action.msg
       }
@@ -37,6 +55,29 @@ function errMsg(msg) {
 
 function registerSuccess(data) {
   return {type: REGISTER_SUCCESS, payload: data};
+}
+
+function loginSuccess(data) {
+  return {type: LOGIN_SUCCESS, payload: data};
+}
+
+export function loadData(userinfo) {
+  return {type: LOAD_DATA, payload: userinfo};
+}
+
+export function login({userName, userPwd}) {
+  if (!userName || !userPwd) {
+    return errMsg('用户名密码必须输入');
+  }
+  return (dispath) => {
+    axios.post('/user/login', {userName, userPwd}).then(res => {
+      if (res.status === 200 && res.data.code === 0) {
+        dispath(loginSuccess(res.data.data));
+      } else {
+        dispath(errMsg(res.data.msg));
+      }
+    });
+  }
 }
 
 export function register({userName, userPwd, repeatPwd, userType}) {

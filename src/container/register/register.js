@@ -27,6 +27,10 @@ class Register extends React.Component {
   componentWillReceiveProps(nextprops) {
     if (nextprops.userInfo.msg) {
       Toast.fail(nextprops.userInfo.msg, 1);
+      return;
+    }
+    if (nextprops.userInfo.redirectTo) { // 注册后跳转
+      this.props.history.push(nextprops.userInfo.redirectTo);
     }
   }
 
