@@ -13,7 +13,7 @@ const models = {
     // 职位名
     'title': {type: String},
     'company':{type: String},
-    'money': {type: String}
+    'salary': {type: String}
   }
 }
 

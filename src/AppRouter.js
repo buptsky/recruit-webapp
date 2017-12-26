@@ -1,16 +1,23 @@
 import React from 'react';
-import {BrowserRouter, Route, Redirect} from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import AuthRoute from './component/authroute/authroute';
+import BossInfo from './container/bossinfo/bossinfo';
+import EmployeeInfo from './container/employeeinfo/employeeinfo';
 import Login from './container/login/login';
 import Register from './container/register/register';
-
+import Dashboard from './component/dashboard/dashboard';
 
 const AppRouter = (
   <BrowserRouter>
     <div>
       <AuthRoute/>
-      <Route path='/login' component={Login}/>
-      <Route path='/register' component={Register}/>
+      <Switch>
+        <Route path='/bossinfo' component={BossInfo}/>
+        <Route path='/employeeinfo' component={EmployeeInfo}/>
+        <Route path='/login' component={Login}/>
+        <Route path='/register' component={Register}/>
+        <Route component={Dashboard}/>
+      </Switch>
     </div>
   </BrowserRouter>
 );

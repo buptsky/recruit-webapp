@@ -1,7 +1,6 @@
 import axios from 'axios';
 import {getRedirectPath} from '../util';
-const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
-const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+const AUTH_SUCCESS = 'AUTH_SUCCESS';
 const ERROR_MSG = 'ERROR_MSG';
 const LOAD_DATA = 'LOAD_DATA';
 
@@ -9,27 +8,17 @@ const LOAD_DATA = 'LOAD_DATA';
 const initState = {
   redirectTo: '',
   msg: '',
-  isAuth: false,
   userName: '',
   userType: ''
 }
 export function user(state = initState, action) {
   switch(action.type) {
-    case REGISTER_SUCCESS:
+    case AUTH_SUCCESS:
       return {
         ...state,
         ...action.payload,
         redirectTo: getRedirectPath(action.payload),
-        msg: '',
-        isAuth: true
-      }
-    case LOGIN_SUCCESS:
-      return {
-        ...state,
-        ...action.payload,
-        redirectTo: getRedirectPath(action.payload),
-        msg: '',
-        isAuth: true
+        msg: ''
       }
     case LOAD_DATA:
       return {
@@ -40,7 +29,6 @@ export function user(state = initState, action) {
       return {
         ...state,
         redirectTo: '',
-        isAuth: false,
         msg: action.msg
       }
     default:
@@ -53,18 +41,26 @@ function errMsg(msg) {
   return {type: ERROR_MSG, msg: msg};
 }
 
-function registerSuccess(data) {
-  return {type: REGISTER_SUCCESS, payload: data};
-}
-
-function loginSuccess(data) {
-  return {type: LOGIN_SUCCESS, payload: data};
+function authSuccess(data) {
+  return {type: AUTH_SUCCESS, payload: data};
 }
 
 export function loadData(userinfo) {
   return {type: LOAD_DATA, payload: userinfo};
 }
-
+// 信息完善
+export function update(data) {
+  return dispath => {
+    axios.post('/user/update', data).then((res) => {
+      if (res.status === 200 && res.data.code === 0) {
+        dispath(authSuccess(res.data.data));
+      } else {
+        dispath(errMsg(res.data.msg));
+      }
+    });
+  }
+}
+// 登录
 export function login({userName, userPwd}) {
   if (!userName || !userPwd) {
     return errMsg('用户名密码必须输入');
@@ -72,14 +68,14 @@ export function login({userName, userPwd}) {
   return (dispath) => {
     axios.post('/user/login', {userName, userPwd}).then(res => {
       if (res.status === 200 && res.data.code === 0) {
-        dispath(loginSuccess(res.data.data));
+        dispath(authSuccess(res.data.data));
       } else {
         dispath(errMsg(res.data.msg));
       }
     });
   }
 }
-
+// 注册
 export function register({userName, userPwd, repeatPwd, userType}) {
   if (!userName || !userPwd) {
     return errMsg('用户名密码必须输入');
@@ -90,7 +86,7 @@ export function register({userName, userPwd, repeatPwd, userType}) {
   return (dispath) => {
     axios.post('/user/register', {userName, userPwd, userType}).then(res => {
       if (res.status === 200 && res.data.code === 0) {
-        dispath(registerSuccess({userName, userPwd, userType}));
+        dispath(authSuccess({userName, userPwd, userType}));
       } else {
         dispath(errMsg(res.data.msg));
       }

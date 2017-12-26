@@ -30,19 +30,17 @@ Router.post('/register', function (req, res) {
     if (doc) {
       return res.json({code: 1, msg: '用户名重复'});
     }
-    const userModel = new User({userName,userType, userPwd: md5pwd(userPwd)});
-    userModel.save(function (err, doc) {
+    User.create({userName, userType, userPwd: md5pwd(userPwd)}, function (err, doc) {
       if (err) {
         return res.json({code: 1, msg: '服务器错误'});
       }
       const {userName, userType, _id} = doc;
       res.cookie('userId', _id);
       return res.json({code: 0, data: {userName, userType, _id}});
-    })
-    // User.create({}, function (err, doc) {
-    // });
+    });
   });
 });
+// 获取登录状态
 Router.get('/info', function (req, res) {
   const {userId} = req.cookies;
   if (!userId) { // 没有cookie
@@ -56,6 +54,19 @@ Router.get('/info', function (req, res) {
       return res.json({code: 0, data: doc});
     }
   })
+});
+// 完善信息
+Router.post('/update', function (req, res) {
+  console.log(req.body);
+  const userId = req.cookies.userId;
+  if (!userId) {
+    return res.json({code: 1});
+  }
+  const body = req.body;
+  User.findByIdAndUpdate(userId, body, function (err, doc) {
+    const data = {userName: doc.userName, userType: doc.userType, ...body};
+    return res.json({code: 0, data});
+  });
 });
 
 // 增加密码复杂度
