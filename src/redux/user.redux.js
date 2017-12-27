@@ -3,6 +3,7 @@ import {getRedirectPath} from '../util';
 const AUTH_SUCCESS = 'AUTH_SUCCESS';
 const ERROR_MSG = 'ERROR_MSG';
 const LOAD_DATA = 'LOAD_DATA';
+const LOGOUT = 'LOGOUT';
 
 // reducer
 const initState = {
@@ -30,6 +31,10 @@ export function user(state = initState, action) {
         ...state,
         redirectTo: '',
         msg: action.msg
+      }
+    case LOGOUT:
+      return {
+        ...initState
       }
     default:
       return {...state};
@@ -92,4 +97,8 @@ export function register({userName, userPwd, repeatPwd, userType}) {
       }
     });
   }
+}
+// 注销
+export function logoutSubmit() {
+  return {type: LOGOUT};
 }

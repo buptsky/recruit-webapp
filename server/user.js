@@ -6,8 +6,11 @@ const User = models.getModel('user');
 const _filter = {userPwd: 0, __v: 0};
 
 Router.get('/list', function (req, res) {
-  User.find({}, function (err, doc) {
-    return res.json(doc);
+  console.log(res);
+  const type = req.query.type;
+  console.log(type);
+  User.find({userType: type}, function (err, doc) {
+    return res.json({code: 0, data:doc});
   });
 });
 // 登录

@@ -46,7 +46,7 @@ class EmployeeInfo extends React.Component {
   render() {
     return (
       <div>
-        <NavBar mode="dark">求职者信息完善</NavBar>
+        <NavBar mode="dark" className="fixd-header">求职者信息完善</NavBar>
         <AvatarSelect selectAvatar={this.selectAvatar}/>
         <InputItem onChange={(val) => this.handleChange('title', val)}>期待职位</InputItem>
         <TextareaItem

@@ -4,6 +4,7 @@ import {List, InputItem, WingBlank, WhiteSpace, Button} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {Toast} from 'antd-mobile';
 import {login} from "../../redux/user.redux";
+import recruitForm from '../../component/recruit-form/recruit-form';
 
 @connect(
   state => ({
@@ -11,14 +12,15 @@ import {login} from "../../redux/user.redux";
   }),
   {login}
 )
+@recruitForm
 class Login extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      userName: '',
-      userPwd: ''
-    }
+    // this.state = {
+    //   userName: '',
+    //   userPwd: ''
+    // }
   }
 
   componentWillReceiveProps(nextprops) {
@@ -35,14 +37,14 @@ class Login extends React.Component {
     this.props.history.push('/register');
   }
 
-  handleChange = (type, val) => {
-    this.setState({
-      [type]: val
-    });
-  }
+  // handleChange = (type, val) => {
+  //   this.setState({
+  //     [type]: val
+  //   });
+  // }
 
   handleLogin = () => {
-    this.props.login(this.state);
+    this.props.login(this.props.state);
   }
 
   render() {
@@ -51,13 +53,13 @@ class Login extends React.Component {
         <Logo/>
         <WingBlank>
           <List>
-            <InputItem onChange={(val) => {this.handleChange('userName', val)}}>
+            <InputItem onChange={(val) => {this.props.handleChange('userName', val)}}>
               用户
             </InputItem>
             <WhiteSpace/>
             <InputItem
               type="password"
-              onChange={(val) => {this.handleChange('userPwd', val)}}
+              onChange={(val) => {this.props.handleChange('userPwd', val)}}
             >
               密码
             </InputItem>

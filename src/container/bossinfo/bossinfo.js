@@ -48,7 +48,7 @@ class BossInfo extends React.Component {
   render() {
     return (
       <div>
-        <NavBar mode="dark">BOSS信息完善</NavBar>
+        <NavBar mode="dark" className="fixd-header">BOSS信息完善</NavBar>
         <AvatarSelect selectAvatar={this.selectAvatar}/>
         <InputItem onChange={(val) => this.handleChange('title', val)}>招聘职位</InputItem>
         <InputItem onChange={(val) => this.handleChange('company', val)}>公司名称</InputItem>

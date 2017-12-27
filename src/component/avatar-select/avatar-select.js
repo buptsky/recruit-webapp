@@ -35,7 +35,7 @@ class AvatarSelect extends React.Component {
         </div>
       ) : (<div>请选择头像</div>);
     return (
-      <div>
+      <div className="page-content">
         <List renderHeader={() => gridHeader}>
           <Grid data={avatarList} onClick={this.selectAvatar}/>
         </List>
