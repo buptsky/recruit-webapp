@@ -3,6 +3,7 @@ const utils = require('utility');
 const Router = express.Router();
 const models = require('./model');
 const User = models.getModel('user');
+const Chat = models.getModel('chat');
 const _filter = {userPwd: 0, __v: 0};
 
 Router.get('/list', function (req, res) {
@@ -57,6 +58,15 @@ Router.get('/info', function (req, res) {
       return res.json({code: 0, data: doc});
     }
   })
+});
+// 获取信息列表
+Router.get('/getmsglist', function (req, res) {
+  const user = req.cookies.userId;
+  Chat.find({'$or': [{from: user, to: user}]}, function (err, doc) {
+    if (!err) {
+      return res.json({code: 0, data: doc});
+    }
+  });
 });
 // 完善信息
 Router.post('/update', function (req, res) {
