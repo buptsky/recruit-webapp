@@ -5,7 +5,7 @@ const models = require('./model');
 const User = models.getModel('user');
 const Chat = models.getModel('chat');
 const _filter = {userPwd: 0, __v: 0};
-
+// 获取用户列表
 Router.get('/list', function (req, res) {
   console.log(res);
   const type = req.query.type;
@@ -62,10 +62,17 @@ Router.get('/info', function (req, res) {
 // 获取信息列表
 Router.get('/getmsglist', function (req, res) {
   const user = req.cookies.userId;
-  Chat.find({'$or': [{from: user, to: user}]}, function (err, doc) {
-    if (!err) {
-      return res.json({code: 0, data: doc});
-    }
+  User.find({}, function (err, doc) {
+    if (err) return console.log(err);
+    let users = {};
+    doc.forEach((item) => {
+      users[item._id] = {name: item.userName, avatar: item.avatar}
+    });
+    Chat.find({'$or': [{from: user}, {to: user}]}, function (err, doc) {
+      if (!err) {
+        return res.json({code: 0, msgs: doc, users: users});
+      }
+    });
   });
 });
 // 完善信息

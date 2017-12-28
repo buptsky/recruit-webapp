@@ -26,6 +26,13 @@ body {
   padding-right: 15px;
   text-align: right;
 }
+#chat-page .am-grid-icon {
+  display: none;
+}
+#chat-page .am-grid-text {
+  margin-top: 0;
+  font-size: 16px;
+}
 .sticky-footer {
   z-index: 10;
   position: absolute;

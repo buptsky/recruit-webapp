@@ -1,3 +1,5 @@
+const models = require('./model');
+const Chat = models.getModel('chat');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -10,9 +12,14 @@ const io = require('socket.io')(server);
 io.on('connection', function (socket) {
   // console.log('user login');
   socket.on('sendmsg', function (data) {
-    console.log(data);
-    io.emit('recvmsg', data);
-  })
+    const {from, to, msg} = data;
+    const chatid = [from, to].sort().join('_');
+    Chat.create({chatid, from, to, content: msg}, function (err, doc) {
+      if (!err) {
+        io.emit('recvmsg', {...doc._doc});
+      }
+    });
+  });
 });
 
 app.use(cookieParser());

@@ -15,14 +15,6 @@ import recruitForm from '../../component/recruit-form/recruit-form';
 @recruitForm
 class Login extends React.Component {
 
-  constructor(props) {
-    super(props);
-    // this.state = {
-    //   userName: '',
-    //   userPwd: ''
-    // }
-  }
-
   componentWillReceiveProps(nextprops) {
     if (nextprops.userInfo.msg) {
       Toast.fail(nextprops.userInfo.msg, 1);

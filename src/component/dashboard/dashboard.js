@@ -1,5 +1,6 @@
 import React from 'react';
-import {Route, Redirect, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
+import {getMsgList, recvMsg} from '../../redux/chat.redux';
 import {NavBar} from 'antd-mobile';
 import {connect} from 'react-redux';
 import Boss from '../boss/boss';
@@ -10,10 +11,19 @@ import NavLinkBar from '../navlink/navlink';
 
 @connect(
   state => ({
-    userInfo: state.user
-  })
+    userInfo: state.user,
+    chat: state.chat
+  }),
+  {getMsgList, recvMsg}
 )
 class Dashboard extends React.Component {
+
+  componentDidMount() {
+    if (!Object.keys(this.props.chat.users).length) {
+      this.props.getMsgList();
+      this.props.recvMsg();
+    }
+  }
 
   render() {
     const {pathname} = this.props.location;
@@ -51,7 +61,12 @@ class Dashboard extends React.Component {
     ];
     return (
       <div>
-        <NavBar mode='dark' className="fixd-header">{navList.find((item) => item.path === pathname).title}</NavBar>
+        <NavBar
+          mode='dark'
+          className="fixd-header"
+        >
+          {navList.find((item) => item.path === pathname).title}
+        </NavBar>
         <div className="page-content">
           <Switch>
             {

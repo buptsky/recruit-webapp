@@ -41,7 +41,7 @@ class Usercenter extends React.Component {
           this.props.userinfo.userName && (
             <div>
               <Result
-                img={<img src={require(`../../asset/avatar-imgs/${userinfo.avatar}.png`)} style={{width: 50}}/>}
+                img={<img src={require(`../../asset/avatar-imgs/${userinfo.avatar}.png`)} style={{width: 50}} alt=""/>}
                 title={userinfo.userName}
                 message={userinfo.userType === 'boss' ? userinfo.company : ''}
               />

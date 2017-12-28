@@ -15,15 +15,6 @@ const RadioItem = Radio.RadioItem;
 )
 @recruitForm
 class Register extends React.Component {
-  constructor(props) {
-    super(props);
-    // this.state = {
-    //   userName: '',
-    //   userPwd: '',
-    //   repeatPwd: '',
-    //   userType: 'employee'
-    // }
-  }
 
   componentDidMount() {
     this.props.handleChange('userType','employee');
