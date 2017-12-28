@@ -10,7 +10,8 @@ const initState = {
   redirectTo: '',
   msg: '',
   userName: '',
-  userType: ''
+  userType: '',
+  _id: ''
 }
 export function user(state = initState, action) {
   switch(action.type) {
@@ -91,7 +92,7 @@ export function register({userName, userPwd, repeatPwd, userType}) {
   return (dispath) => {
     axios.post('/user/register', {userName, userPwd, userType}).then(res => {
       if (res.status === 200 && res.data.code === 0) {
-        dispath(authSuccess({userName, userPwd, userType}));
+        dispath(authSuccess({...res.data.data}));
       } else {
         dispath(errMsg(res.data.msg));
       }

@@ -3,6 +3,7 @@ import {Result, List, WhiteSpace, Modal} from 'antd-mobile';
 import browserCookie from 'browser-cookies';
 import {connect} from 'react-redux';
 import {logoutSubmit} from '../../redux/user.redux';
+import {emptyMsgs} from '../../redux/chat.redux';
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -12,7 +13,7 @@ const confirmAlert = Modal.alert;
   state => ({
     userinfo: state.user
   }),
-  {logoutSubmit}
+  {logoutSubmit, emptyMsgs}
 )
 class Usercenter extends React.Component {
 
@@ -27,6 +28,7 @@ class Usercenter extends React.Component {
       {text: '确认', onPress: () => {
         browserCookie.erase('userId');
         this.props.logoutSubmit();
+        this.props.emptyMsgs();
         this.props.history.push('/login');
       }},
     ]);
