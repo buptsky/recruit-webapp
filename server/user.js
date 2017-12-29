@@ -7,16 +7,16 @@ const Chat = models.getModel('chat');
 const _filter = {userPwd: 0, __v: 0};
 // 获取用户列表
 Router.get('/list', function (req, res) {
-  console.log(res);
+  // console.log(res);
   const type = req.query.type;
-  console.log(type);
+  // console.log(type);
   User.find({userType: type}, function (err, doc) {
     return res.json({code: 0, data:doc});
   });
 });
 // 登录
 Router.post('/login', function (req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   const {userName, userPwd} = req.body;
   User.findOne({userName, userPwd: md5pwd(userPwd)}, _filter, function (err, doc) {
     if (!doc) {
@@ -28,7 +28,7 @@ Router.post('/login', function (req, res) {
 });
 // 注册
 Router.post('/register', function (req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   const {userName, userPwd, userType} = req.body;
   User.findOne({userName}, function (err, doc) {
     if (doc) {
@@ -76,7 +76,7 @@ Router.get('/getmsglist', function (req, res) {
   });
 });
 Router.post('/readmsg', function (req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   const userId = req.cookies.userId;
   if (!userId) {
     return res.json({code: 1});
@@ -92,7 +92,7 @@ Router.post('/readmsg', function (req, res) {
 });
 // 完善信息
 Router.post('/update', function (req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   const userId = req.cookies.userId;
   if (!userId) {
     return res.json({code: 1});
