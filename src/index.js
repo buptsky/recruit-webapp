@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router-dom';
 import './index.css'; // 基础样式
 import './config'; // 全局拦截
 import AppRouter from './AppRouter';
@@ -14,9 +15,11 @@ const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(
   applyMiddleware(thunk)
 ));
 
-ReactDOM.render(
+ReactDOM.hydrate(
   <Provider store={store}>
-    {AppRouter}
+    <BrowserRouter>
+      <AppRouter/>
+    </BrowserRouter>
   </Provider>, document.getElementById('root')
 );
 

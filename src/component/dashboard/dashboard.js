@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Redirect} from 'react-router-dom';
 import {getMsgList, recvMsg} from '../../redux/chat.redux';
 import {NavBar} from 'antd-mobile';
 import {connect} from 'react-redux';
@@ -8,6 +8,7 @@ import Employee from '../employee/employee';
 import Msg from '../msg/msg';
 import Usercenter from '../usercenter/usercenter';
 import NavLinkBar from '../navlink/navlink';
+import QueueAnim from 'rc-queue-anim';
 
 @connect(
   state => ({
@@ -59,28 +60,24 @@ class Dashboard extends React.Component {
         component: Usercenter
       }
     ];
+    const page = navList.find(item => item.path === pathname);
+    if (!page) return (<Redirect to={"/msg"}/>);
     return (
       <div>
         <NavBar
           mode='dark'
           className="fixd-header"
         >
-          {navList.find((item) => item.path === pathname).title}
+          {page.title}
         </NavBar>
         <div className="page-content">
-          <Switch>
-            {
-              navList.map((item) => {
-                return (
-                  <Route
-                    key={item.path}
-                    path={item.path}
-                    component={item.component}
-                  />
-                );
-              })
-            }
-          </Switch>
+          <QueueAnim type={'scaleX'}>
+            <Route
+              key={page.path}
+              path={page.path}
+              component={page.component}
+            />
+          </QueueAnim>
         </div>
         <NavLinkBar data={navList}/>
       </div>

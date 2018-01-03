@@ -3,6 +3,7 @@ import {List, InputItem, NavBar, Icon, Grid} from 'antd-mobile';
 import {getMsgList, sendMsg, recvMsg, readMsg} from '../../redux/chat.redux';
 import {getChatId} from '../../util';
 import {connect} from 'react-redux';
+import QueueAnim from 'rc-queue-anim';
 
 const Item = List.Item;
 
@@ -67,26 +68,28 @@ class Chat extends React.Component {
         >
           {users[userId].name}
         </NavBar>
-        {
-          chatmsgs.map((item, index) => {
-            const avatar = require(`../../asset/avatar-imgs/${users[item.from].avatar}.png`)
-            if (item.from === userId) {
-              return (
-                <List key={item._id}>
-                  <Item thumb={avatar}>{item.content}</Item>
-                </List>
-              )
-            } else {
-              return (
-                <List key={item._id}>
-                  <Item className="chat-me" extra={<img src={avatar} alt=""/>}>
-                    {item.content}
-                  </Item>
-                </List>
-              )
-            }
-          })
-        }
+        <QueueAnim>
+          {
+            chatmsgs.map((item, index) => {
+              const avatar = require(`../../asset/avatar-imgs/${users[item.from].avatar}.png`)
+              if (item.from === userId) {
+                return (
+                  <List key={item._id}>
+                    <Item thumb={avatar}>{item.content}</Item>
+                  </List>
+                )
+              } else {
+                return (
+                  <List key={item._id}>
+                    <Item className="chat-me" extra={<img src={avatar} alt=""/>}>
+                      {item.content}
+                    </Item>
+                  </List>
+                )
+              }
+            })
+          }
+        </QueueAnim>
         <div className="sticky-footer">
           <List>
             <InputItem
